@@ -181,6 +181,7 @@ public class CaseReqController {
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		String jsonStr = gson.toJson(map);
 		return jsonStr;
+		
 	}
 
 	/**
