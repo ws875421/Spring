@@ -1,0 +1,17 @@
+package com.webcomm.oa.config;
+
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
+import org.thymeleaf.dialect.springdata.SpringDataDialect;
+
+public class ServletInitializer extends SpringBootServletInitializer {
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(OaSpringRexApplication.class);
+	}
+
+	
+
+}

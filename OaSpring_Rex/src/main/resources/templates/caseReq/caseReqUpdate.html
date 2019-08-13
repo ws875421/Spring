@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>caseReqUpdate</title>
+</head>
+<body>
+
+	<div id="caseReqCreateOrUpdateFragment">
+		
+		<!-- 		<span th:text="${result}" id="result" style="display:none;"></span> -->
+		<!-- 		<hr /> -->
+		<!-- 		<p th:text="${caseReq}"></p> -->
+		<div class="container">
+		<h4>修改畫面</h4>
+			<form id="caseReqCreateOrUpdateForm" th:object="${caseReq}" action="createOrUpdateCaseReq" method="post">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="caseNo">工作編號</label> <input type="text" id="caseNo" name="caseNo" class="form-control" th:field="*{caseNo}"
+								readonly />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="caseLevel">列管層級</label> <select id="caseLevel" name="caseLevel" class="form-control" th:field="*{caseLevel}">
+								<option th:each="caseLevelVar : ${T(com.webcomm.oa.data.CaseLevelEnum).values()}" th:value="${caseLevelVar}"
+									th:text="${caseLevelVar.label}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="casetype">類別</label> <select id="caseType" name="caseType" class="form-control" th:field="*{caseType}">
+								<option th:each="caseTypeVar : ${T(com.webcomm.oa.data.CaseTypeEnum).values()}" th:value="${caseTypeVar}"
+									th:text="${caseTypeVar.label}"></option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="hostEmployee">主管單位承辦人</label> <select id="hostEmployee" name="hostEmployee" class="form-control"
+								th:field="*{hostEmployee.empId}">
+								<option th:each="hostEmployee : ${employeeList}" th:value="${hostEmployee.empId}"
+									th:text="${hostEmployee.unit.unitName + '-' + hostEmployee.empName + '(' + hostEmployee.empId + ')'}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="cohostEmployee">承辦單位承辦人</label> <select id="cohostEmployee" name="cohostEmployee" class="form-control"
+								th:field="*{cohostEmployee.empId}">
+								<option th:each="cohostEmployee : ${employeeList}" th:value="${cohostEmployee.empId}"
+									th:text="${cohostEmployee.unit.unitName + '-' + cohostEmployee.empName + '(' + cohostEmployee.empId + ')'}"></option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="startdate">辦理啟日</label> <span class="text-danger font-weight-bolder font-italic"
+								th:if="${#fields.hasErrors('startdate')}" th:errors="*{startdate}"></span> <input type="text" id="startdate"
+								name="startdate" pattern="\d{4}/\d{1,2}/\d{1,2}" class="form-control" th:field="*{startdate}" th:value="*{startdate}">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="enddate">辦理迄日</label> <span class="text-danger font-weight-bolder font-italic"
+								th:if="${#fields.hasErrors('enddate')}" th:errors="*{enddate}"></span> <span
+								class="text-danger font-weight-bolder font-italic" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></span> <input
+								type="text" id="enddate" name="enddate" pattern="\d{4}/\d{1,2}/\d{1,2}" class="form-control" th:field="*{enddate}">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="workitem">工作項目 :</label> <span class="text-danger font-weight-bolder font-italic"
+						th:if="${#fields.hasErrors('workitem')}" th:errors="*{workitem}"></span>
+					<textarea id="workitem" name="workitem" class="form-control" rows="3" th:field="*{workitem}"></textarea>
+				</div>
+				<div class="text-right">
+					<button type="button" class="btn btn-light btn-sm" onClick="caseReqUpdate()">儲存</button>
+					<!-- 				<a href="/oa/caseReq/index"> -->
+					<button type="button" id="retun" class="btn btn-light btn-sm">返回</button>
+					<!-- 				</a> -->
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>

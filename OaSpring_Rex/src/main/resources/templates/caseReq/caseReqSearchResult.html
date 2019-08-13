@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org/spring-data">
+<head>
+<meta charset="UTF-8">
+<title>caseReqSearchResult</title>
+
+</head>
+<body>
+
+	<div id="caseReqSearchResultFragment">
+		<div class="row">
+			<div class="col-md-2">
+				<h6>查詢結果</h6>
+			</div>
+			<div class="col-md-1">
+				<button type="button" class="btn btn-light btn-sm delete" onClick="deleteCaseReqs()" style="position: relative; right: 110px;">刪除</button>
+			</div>
+		</div>
+		<table class="table table-hover table-sm table-striped" style="font-size: small;">
+			<thead class="table-primary" style="background-color: #fff;">
+				<tr>
+					<th><input type="checkbox" onChange="selectAllDeleteItems(this)" id="selectAllDeleteItemsCheckbox" /></th>
+					<th>項次</th>
+					<th><a class="sorted" sd:pagination-sort="caseNo">工作編號</a></th>
+					<th><a class="sorted" sd:pagination-sort="caseType">類別</a></th>
+					<th><a class="sorted" sd:pagination-sort="caseLevel">列管層級</a></th>
+					<th><a class="sorted" sd:pagination-sort="hostEmployee.unit.unitId">主管單位</a></th>
+					<th><a class="sorted" sd:pagination-sort="hostEmployee.empId">主管單位承辦人</a></th>
+					<th><a class="sorted" sd:pagination-sort="cohostEmployee.unit.unitId">承辦單位</a></th>
+					<th><a class="sorted" sd:pagination-sort="cohostEmployee.empId">承辦單位承辦人</a></th>
+					<th><a class="sorted" sd:pagination-sort="startdate">辦理起日</a></th>
+					<th><a class="sorted" sd:pagination-sort="enddate">辦理迄日</a></th>
+					<th><a class="sorted" sd:pagination-sort="workitem">工作項目</a></th>
+					<th>功能</th>
+				</tr>
+			</thead>
+			<tbody id="queryTbody">
+				<tr th:each="aCaseReq : ${queryCaseReqList}">
+					<td><input type="checkbox" onChange="uncheckedSelectAllDeleteItems()" class="deleteItems" th:value="${aCaseReq.caseNo}" /></td>
+					<td th:text="${aCaseReqStat.count + pageable.pageNumber * pageable.pageSize}"></td>
+					<td th:text="${aCaseReq.caseNo}"></td>
+					<td th:text="${aCaseReq.caseType.label}"></td>
+					<td th:text="${aCaseReq.caseLevel.label}"></td>
+					<td th:text="${aCaseReq.hostEmployee.unit.unitName + ' (' + aCaseReq.hostEmployee.unit.unitId + ')'}"></td>
+					<td th:text="${aCaseReq.hostEmployee.empName + ' (' + aCaseReq.hostEmployee.empId + ')'}"></td>
+					<td th:text="${aCaseReq.cohostEmployee.unit.unitName + ' (' + aCaseReq.cohostEmployee.unit.unitId + ')'}"></td>
+					<td th:text="${aCaseReq.cohostEmployee.empName + ' (' + aCaseReq.cohostEmployee.empId + ')'}"></td>
+					<td th:text="${aCaseReq.startdate}"></td>
+					<td th:text="${aCaseReq.enddate}" ></td>
+					<td th:text="${aCaseReq.workitem}"></td>
+					<td><button type="button" class="btn btn-light btn-sm" onClick="getOneForUpdate(this)" th:value="${aCaseReq.caseNo}"
+							style="width: 40px;">修改</button></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+
+
+
+		<ul class="pagination" sd:pagination="full"></ul>
+
+	</div>
+	<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+		
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".page-link").click(function(e) {
+				e.preventDefault();
+				Pageable(this.href);
+			});
+			$(".sorted").click(function(e) {
+				e.preventDefault();
+				Pageable(this.href);
+			});
+
+		});
+
+		function Pageable(e) {
+			$('#queryResult').load(e);
+			$(".page-link").click(function(e) {
+				e.preventDefault();
+			});
+		}
+	</script>
+
+
+</body>
+</html>

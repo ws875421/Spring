@@ -1,0 +1,38 @@
+server:
+  servlet:
+    context-path: /oa
+  port: 9000
+
+spring:
+  datasource:
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: WEBCOMM
+    password: 123456
+  jpa:
+   hibernate:
+     ddl-auto: none
+   show-sql: true
+   database-platform: org.hibernate.dialect.Oracle10gDialect
+  thymeleaf:
+   cache: false
+##Gmail
+  mail: 
+    host: smtp.gmail.com
+    port: 587
+    username: rex@webcomm.com.tw
+    password: ws875421
+    properties.mail.smtp:
+     auth: true
+     starttls.enable: true
+     ssl.trust: smtp.gmail.com
+  quartz:
+    job-store-type: memory
+    properties:
+      org.quartz.threadPool.threadCount: 5
+    
+#發件人
+mail.fromMail.addr : rex@webcomm.com.tw    
+      
+
+

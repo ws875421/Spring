@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/common-ui.css}" />
+<script type="text/javascript" th:src="@{/jq/caseReq.js}"></script>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
+</head>
+<body>
+	<div th:include="layout/header :: header"></div>
+	<div layout:fragment="content"></div>
+	<div th:include="layout/footer :: footer"></div>
+
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#startdate,#enddate').mask('0000/00/00');
+		});
+	</script>
+</body>
+</html>

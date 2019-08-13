@@ -1,0 +1,77 @@
+body {
+	/* 	font-size: 93.75%; */
+	/* 	line-height: 130%; */
+	/* 	color: #000000; */
+	margin: 0;
+	padding: 0;
+}
+
+#headerBase {
+	/* 	background: url("../img/logo0.png") repeat-x; */
+	height: 90px;
+	width: 100%;
+	display: inline-block;
+	background-color: white;
+	margin-right: 20px;
+	box-shadow: 3px 3px 9px #eee;
+}
+
+#headerBg {
+	background: url("../img/logo0.png") no-repeat;
+	height: 200px;
+	width: 200px;
+	background-size: contain;
+	margin: 10px;
+	padding: 0;
+}
+
+#footerBg {
+	/* 	background: url("../img/header_base_bg.jpg") repeat-x; */
+	font-size: medium;
+	position: absolute;
+	margin: 10px;
+	margin-top: 50px;
+	height: 20px;
+	/* 	text-align: left; */
+	/* 	color: black; */
+	/* 	float: right; */
+	/* 	height: 100px; */
+}
+
+#backgroundArea {
+	background-color: #CCE8CF;
+}
+
+#content {
+	padding-top: 10px;
+	padding-bottom: 15px;
+}
+
+button {
+	background-color: #007bff !important;
+	color: white !important;
+	width: 60px;
+}
+
+.table-primary tbody+tbody, .table-primary td, .table-primary th,
+	.table-primary thead th {
+	border-color: #dee2e6 !important;
+}
+
+.sorted-desc::after, .sorted-asc::after {
+	float: right;
+}
+
+.sorted-desc::after {
+	content: "\25BC";
+}
+
+.sorted-asc::after {
+	content: "\25B2";
+}
+
+.login {
+	position: absolute;
+	right: 30px;
+	margin-top: 20px;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head>
+<meta charset="UTF-8">
+<title>caseReqSearch</title>
+</head>
+<body>
+
+
+	<div id="page" layout:fragment="content">
+		<div id="CreateView"></div>
+		<div id="container">
+			<div class="container-fluid" style="background-color: #e9ecef; padding: 50px;">
+				<hr style="display: none" />
+				<div class="container">
+					<h1 style="font-size: 70px;">查詢條件</h1>
+
+					<form id="caseReqSearchForm" action="converPDF" method="get" target="_blank">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="caseLevel">列管層級</label> <select id="caseLevel" name="caseLevel" class="form-control">
+										<option th:each="caseLevelVar : ${T(com.webcomm.oa.data.CaseLevelEnum).values()}" th:value="${caseLevelVar.value}"
+											th:text="${caseLevelVar.label}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="caseType">類別</label> <select id="caseType" name="caseType" class="form-control">
+										<option th:each="caseTypeVar : ${T(com.webcomm.oa.data.CaseTypeEnum).values()}" th:value="${caseTypeVar.value}"
+											th:text="${caseTypeVar.label}"></option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="hostUnit">主管單位</label> <select id="hostUnit" name="hostUnit" class="form-control">
+										<option value="0">全部</option>
+										<option th:each="hostUnitVar : ${unitList}" th:value="${hostUnitVar.unitId}" th:text="${hostUnitVar.unitName}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="cohostUnit">承辦單位</label> <select id="cohostUnit" name="cohostUnit" class="form-control">
+										<option value="0">全部</option>
+										<option th:each="cohostUnitVar : ${unitList}" th:value="${cohostUnitVar.unitId}" th:text="${cohostUnitVar.unitName}"></option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="text-right">
+							<button type="button" class="btn btn-light btn-sm" onClick="getCreateView()">新增</button>
+							<button type="button" class="btn btn-light btn-sm query" onClick="queryCaseReqPageable(this)">查詢</button>
+							<span sec:authorize="hasRole('ADMIN')">
+								<button type="submit" class="btn btn-light btn-sm query">列印</button> <!-- 					<button type="button" class="btn btn-light btn-sm" onClick="getCaseReqJasper()">列印</button> -->
+							</span>
+
+						</div>
+					</form>
+				</div>
+			</div>
+			<div id="queryResult" style="margin-top: 40px; width: 75%;" class="container-fluid"></div>
+		</div>
+
+	</div>
+
+</body>
+</html>
+
+
+
+<!-- 			<p th:text="${#authentication.name}"></p> -->
