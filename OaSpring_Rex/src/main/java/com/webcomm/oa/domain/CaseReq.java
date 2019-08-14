@@ -65,9 +65,9 @@ public class CaseReq implements Serializable {
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Date enddate;
 
-	@NotEmpty(message = "不能為空")
+//	@NotEmpty(message = "不能為空")
 	@Column(name = "WORKITEM")
-	@Size(max = 14, message = "訊息過長")
+//	@Size(max = 14, message = "訊息過長")
 	private String workitem;
 
 	public CaseReq() {

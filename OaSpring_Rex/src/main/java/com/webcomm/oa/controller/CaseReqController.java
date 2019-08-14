@@ -48,6 +48,8 @@ import com.webcomm.oa.domain.CaseReq;
 import com.webcomm.oa.service.CaseReqPdfService;
 import com.webcomm.oa.service.CaseReqService;
 import com.webcomm.oa.to.CaseReqPDF;
+import com.webcomm.oa.validator.CaseReqValidator;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -73,6 +75,9 @@ public class CaseReqController {
 	/** The case req pdf service. */
 	@Autowired
 	private CaseReqPdfService caseReqPdfService;
+
+	@Autowired
+	CaseReqValidator reqValidator;
 
 	/**
 	 * Index.
@@ -156,10 +161,11 @@ public class CaseReqController {
 
 	@RequestMapping("/caseReq/createOrUpdateCaseReq")
 	@ResponseBody
-	public String createOrUpdateCaseReq(Model model, @Validated CaseReq caseReq, BindingResult result) {
+	public String createOrUpdateCaseReq(Model model, CaseReq caseReq, BindingResult result) {
 
+		reqValidator.validate(caseReq, result);
 		List<String> errorList = new ArrayList<>();
-
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		if (result.hasErrors()) { // 現在表示執行的驗證出現錯誤
 			Iterator<ObjectError> iterator = result.getAllErrors().iterator(); // 獲取全部錯誤信息
 			while (iterator.hasNext()) {
@@ -170,18 +176,18 @@ public class CaseReqController {
 			HashMap<String, Object> map = new HashMap<>();
 			map.put("status", "error");
 			map.put("errorMsg", errorList);
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
 			String jsonStr = gson.toJson(map);
 			return jsonStr;
 		}
-		
+
 		caseReqService.createOrUpdateCaseReq(caseReq);
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("status", "success");
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
 		String jsonStr = gson.toJson(map);
 		return jsonStr;
-		
+
 	}
 
 	/**
