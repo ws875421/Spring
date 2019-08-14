@@ -164,7 +164,7 @@ public class CaseReqController {
 	@RequestMapping("/caseReq/createOrUpdateCaseReq")
 	@ResponseBody
 	public String createOrUpdateCaseReq(Model model, CaseReq caseReq, BindingResult result) {
-		List<String> errorList = new ArrayList<>();
+		List<Object> errorList = new ArrayList<>();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
 		reqValidator.validate(caseReq, result);
@@ -184,14 +184,21 @@ public class CaseReqController {
 
 			String jsonStr = gson.toJson(map);
 			return jsonStr;
+		} else {
+			HashMap<String, Object> map = new HashMap<>();
+			try {
+				caseReqService.createOrUpdateCaseReq(caseReq);
+				map.put("status", "success");
+				String jsonStr = gson.toJson(map);
+				return jsonStr;
+			} catch (Exception e) {
+				errorList.add(e.getMessage());
+				map.put("status", "error");
+				map.put("errorMsg", errorList);
+				String jsonStr = gson.toJson(map);
+				return jsonStr;
+			}
 		}
-
-		caseReqService.createOrUpdateCaseReq(caseReq);
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("status", "success");
-
-		String jsonStr = gson.toJson(map);
-		return jsonStr;
 
 	}
 
