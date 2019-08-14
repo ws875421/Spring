@@ -221,13 +221,11 @@ public class CaseReqServiceImp implements CaseReqService {
 					predicates.add(criteriaBuilder.equal(root.get("caseLevel"),
 							CaseLevelEnum.getEnum(Integer.parseInt(caseReqSearchBean.getCaseLevel()))));
 				if (!"0".equals(caseReqSearchBean.getHostUnit()))
-					predicates.add(
-							criteriaBuilder.equal(root.get("hostEmployee").get("unit").get("unitId").as(String.class),
-									caseReqSearchBean.getHostUnit()));
+					predicates.add(criteriaBuilder.equal(root.get("hostEmployee").get("unit").get("unitId"),
+							caseReqSearchBean.getHostUnit()));
 				if (!"0".equals(caseReqSearchBean.getCohostUnit()))
-					predicates.add(
-							criteriaBuilder.equal(root.get("cohostEmployee").get("unit").get("unitId").as(String.class),
-									caseReqSearchBean.getCohostUnit()));
+					predicates.add(criteriaBuilder.equal(root.get("cohostEmployee").get("unit").get("unitId"),
+							caseReqSearchBean.getCohostUnit()));
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
 			}
