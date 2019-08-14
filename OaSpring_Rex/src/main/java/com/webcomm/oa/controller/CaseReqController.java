@@ -93,6 +93,10 @@ public class CaseReqController {
 		return "index";
 	}
 
+	@RequestMapping("/index2")
+	public void index() {
+		System.out.println("##");
+	}
 	/**
 	 * Gets the search view.
 	 *
