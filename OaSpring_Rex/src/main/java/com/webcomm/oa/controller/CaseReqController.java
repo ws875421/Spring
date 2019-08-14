@@ -26,13 +26,16 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.DateBuilder.IntervalUnit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -162,16 +165,19 @@ public class CaseReqController {
 	@RequestMapping("/caseReq/createOrUpdateCaseReq")
 	@ResponseBody
 	public String createOrUpdateCaseReq(Model model, CaseReq caseReq, BindingResult result) {
-
-		reqValidator.validate(caseReq, result);
 		List<String> errorList = new ArrayList<>();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+		reqValidator.validate(caseReq, result);
+
 		if (result.hasErrors()) { // 現在表示執行的驗證出現錯誤
 			Iterator<ObjectError> iterator = result.getAllErrors().iterator(); // 獲取全部錯誤信息
 			while (iterator.hasNext()) {
 				ObjectError error = iterator.next(); // 取出每一個錯誤 "【錯誤信息】code = " + error.getCode() + "，message = " +
 														// error.getDefaultMessage()
-				errorList.add(error.getDefaultMessage());
+				if (error.getCode().equals("CaseReq")) {
+					errorList.add(error.getDefaultMessage());
+				}
 			}
 			HashMap<String, Object> map = new HashMap<>();
 			map.put("status", "error");

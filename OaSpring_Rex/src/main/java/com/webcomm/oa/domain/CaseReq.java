@@ -55,13 +55,11 @@ public class CaseReq implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "STARTDATE")
-	@NotNull(message = "日期不能為空")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Date startdate;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "ENDDATE")
-	@NotNull(message = "日期不能為空")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Date enddate;
 
