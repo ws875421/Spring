@@ -50,7 +50,6 @@ import com.webcomm.oa.batch.MailCaseReqReportJob;
 import com.webcomm.oa.domain.CaseReq;
 import com.webcomm.oa.service.CaseReqPdfService;
 import com.webcomm.oa.service.CaseReqService;
-import com.webcomm.oa.to.CaseReqPDF;
 import com.webcomm.oa.validator.CaseReqValidator;
 
 import net.sf.jasperreports.engine.JRException;
@@ -221,12 +220,12 @@ public class CaseReqController {
 	 * @param caseReqPDF        the case req PDF
 	 */
 	@RequestMapping("/caseReq/converPDF")
-	public void converPDF(HttpServletResponse response, CaseReqSearchBean caseReqSearchBean, CaseReqPDF caseReqPDF) {
+	public void converPDF(HttpServletResponse response, CaseReqSearchBean caseReqSearchBean) {
 
 		try {
 			OutputStream out;
 			JasperPrint jasperPrint = caseReqPdfService.setPdfData(caseReqService.queryCaseReqList(caseReqSearchBean),
-					caseReqPDF, "jasper/report2.jasper");
+					"jasper/report2.jasper");
 			out = response.getOutputStream();
 			response.setContentType("application/pdf");
 			response.setCharacterEncoding("UTF-8");
