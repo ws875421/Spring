@@ -34,25 +34,16 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public RoleHierarchyImpl roleHierarchy() {
-		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-		String hierarchy = "ROLE_ADMIN > ROLE_USER and ROLE_USER > ROLE_TESTER";
-		roleHierarchy.setHierarchy(hierarchy);
-		return roleHierarchy;
-	}
-
-	private SecurityExpressionHandler<FilterInvocation> expressionHandler() {
-		DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
-		defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
-		return defaultWebSecurityExpressionHandler;
-	}
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/caseReq/*").hasRole("USER").antMatchers("/admin/**").hasRole("ADMIN")
-				.antMatchers("/userRole/*").hasRole("ADMIN").and().formLogin().defaultSuccessUrl("/index").and()
-				.logout().logoutSuccessUrl("/index").and().csrf().disable();
+		http
+		.authorizeRequests()
+			.antMatchers("/caseReq/*").hasRole("USER")
+			.antMatchers("/admin/**").hasRole("ADMIN")
+			.antMatchers("/userRole/*").hasRole("ADMIN")
+			.and().formLogin().defaultSuccessUrl("/index")
+			.and().logout().logoutSuccessUrl("/index")
+			.and().csrf().disable();
 	}
 
 }
