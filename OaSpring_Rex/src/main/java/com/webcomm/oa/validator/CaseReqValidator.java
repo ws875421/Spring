@@ -31,6 +31,9 @@ public class CaseReqValidator implements Validator {
 		if (caseReq.getEnddate() == null) {
 			e.rejectValue("enddate", "CaseReq", "辦理迄日:日期有誤");
 		}
+		if (caseReq.getEnddate().before(caseReq.getStartdate())) {
+			e.rejectValue("enddate", "CaseReq", "辦理迄日:需大於辦理啟日");
+		}
 	}
 
 	private boolean checkInputString(String input) {

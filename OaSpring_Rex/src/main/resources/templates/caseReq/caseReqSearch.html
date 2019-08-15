@@ -56,8 +56,9 @@
 						<div class="text-right">
 							<button type="button" class="btn btn-light btn-sm" onClick="getCreateView()">新增</button>
 							<button type="button" class="btn btn-light btn-sm query" onClick="queryCaseReqPageable(this)">查詢</button>
-							<span sec:authorize="hasRole('ADMIN')">
-								<button type="submit" class="btn btn-light btn-sm query">列印</button> <!-- 					<button type="button" class="btn btn-light btn-sm" onClick="getCaseReqJasper()">列印</button> -->
+
+							<span sec:authorize-url="/admin/**">
+								<button type="submit" class="btn btn-light btn-sm query">列印</button>
 							</span>
 
 						</div>

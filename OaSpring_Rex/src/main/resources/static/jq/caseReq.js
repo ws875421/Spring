@@ -161,6 +161,7 @@ function deleteCaseReqs() {
 				success : function(data) {
 					console.log("#" + data);
 					alert(data);
+					queryCaseReqPageable();
 				}
 			});
 			queryCaseReqPageable();
