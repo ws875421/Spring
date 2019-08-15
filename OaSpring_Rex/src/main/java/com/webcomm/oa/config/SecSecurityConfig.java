@@ -24,9 +24,12 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-		auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("123456")).roles("USER").and()
-				.withUser("admin").password(passwordEncoder().encode("123456")).roles("ADMIN", "USER");
-
+		auth.inMemoryAuthentication()
+				.withUser("user1").password(passwordEncoder().encode("123456")).roles("USER")
+				.and()
+				.withUser("admin").password(passwordEncoder().encode("123456")).roles("ADMIN", "USER")
+				.and()
+				.withUser("user2").password(passwordEncoder().encode("123456")).roles("ADMIN", "USER");
 	}
 
 	@Bean
@@ -40,7 +43,6 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 			.antMatchers("/caseReq/*").hasRole("USER")
 			.antMatchers("/admin/**").hasRole("ADMIN")
-			.antMatchers("/userRole/*").hasRole("ADMIN")
 			.and().formLogin().defaultSuccessUrl("/index")
 			.and().logout().logoutSuccessUrl("/index")
 			.and().csrf().disable();
