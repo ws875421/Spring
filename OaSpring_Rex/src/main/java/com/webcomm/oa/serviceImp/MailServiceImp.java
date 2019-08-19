@@ -1,11 +1,21 @@
 package com.webcomm.oa.serviceImp;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.mail.util.ByteArrayDataSource;
 
+import org.quartz.DateBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.DateBuilder.IntervalUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -15,7 +25,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.webcomm.oa.batch.MailCaseReqReportJob;
 import com.webcomm.oa.service.MailService;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperPrint;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -33,8 +48,14 @@ public class MailServiceImp implements MailService {
 	@Value("${mail.fromMail.addr}")
 	private String from;
 
-	/* (non-Javadoc)
-	 * @see com.webcomm.oa.service.MailService#sendSimpleMail(java.lang.String, java.lang.String, java.lang.String)
+	@Autowired
+	private Scheduler scheduler;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.webcomm.oa.service.MailService#sendSimpleMail(java.lang.String,
+	 * java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void sendSimpleMail(String to, String subject, String content) {
@@ -52,8 +73,11 @@ public class MailServiceImp implements MailService {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.webcomm.oa.service.MailService#sendHtmlMail(java.lang.String, java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.webcomm.oa.service.MailService#sendHtmlMail(java.lang.String,
+	 * java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void sendHtmlMail(String to, String subject, String content) {
@@ -71,8 +95,11 @@ public class MailServiceImp implements MailService {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.webcomm.oa.service.MailService#sendAttachmentMail(java.lang.String, java.lang.String, java.lang.String, javax.activation.DataSource)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.webcomm.oa.service.MailService#sendAttachmentMail(java.lang.String,
+	 * java.lang.String, java.lang.String, javax.activation.DataSource)
 	 */
 	@Override
 	public void sendAttachmentMail(String to, String subject, String content, DataSource aAttachment) {
@@ -92,6 +119,17 @@ public class MailServiceImp implements MailService {
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void sendmail(JasperPrint jasperPrint) throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
+		DataSource aAttachment = new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
+		JobDataMap jobDataMap = new JobDataMap();
+		jobDataMap.put("aAttachment", aAttachment);
+		JobDetail job = JobBuilder.newJob(MailCaseReqReportJob.class).setJobData(jobDataMap).build();
+		Trigger trigger = TriggerBuilder.newTrigger().startAt(DateBuilder.futureDate(10, IntervalUnit.SECOND)).build();
+		scheduler.scheduleJob(job, trigger);
 	}
 
 }

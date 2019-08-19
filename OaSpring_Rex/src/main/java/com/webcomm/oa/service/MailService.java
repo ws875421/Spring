@@ -2,6 +2,8 @@ package com.webcomm.oa.service;
 
 import javax.activation.DataSource;
 
+import net.sf.jasperreports.engine.JasperPrint;
+
 public interface MailService {
 	// 傳送普通郵件
 	void sendSimpleMail(String to, String subject, String content);
@@ -11,4 +13,6 @@ public interface MailService {
 
 	// 傳送帶附件的郵件
 	void sendAttachmentMail(String to, String subject, String content, DataSource aAttachment);
+
+	public void sendmail(JasperPrint jasperPrint) throws Exception;
 }

@@ -50,6 +50,7 @@ import com.webcomm.oa.batch.MailCaseReqReportJob;
 import com.webcomm.oa.domain.CaseReq;
 import com.webcomm.oa.service.CaseReqPdfService;
 import com.webcomm.oa.service.CaseReqService;
+import com.webcomm.oa.service.MailService;
 import com.webcomm.oa.validator.CaseReqValidator;
 
 import net.sf.jasperreports.engine.JRException;
@@ -72,7 +73,7 @@ public class CaseReqController {
 
 	/** The scheduler. */
 	@Autowired
-	private Scheduler scheduler;
+	private MailService mailService;
 
 	/** The case req pdf service. */
 	@Autowired
@@ -239,24 +240,11 @@ public class CaseReqController {
 
 			JasperExportManager.exportReportToPdfStream(jasperPrint, out);
 			out.flush();
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
-			DataSource aAttachment = new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
-			JobDataMap jobDataMap = new JobDataMap();
-			jobDataMap.put("aAttachment", aAttachment);
-			JobDetail job = JobBuilder.newJob(MailCaseReqReportJob.class).setJobData(jobDataMap).build();
-			Trigger trigger = TriggerBuilder.newTrigger().startAt(DateBuilder.futureDate(10, IntervalUnit.SECOND))
-					.build();
-			scheduler.scheduleJob(job, trigger);
 
-		} catch (JRException ex) {
+			mailService.sendmail(jasperPrint);
+
+		} catch (Exception ex) {
 			ex.printStackTrace();
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SchedulerException e) {
-			e.printStackTrace();
 		}
 	}
 
