@@ -16,6 +16,8 @@ import java.util.Map;
 import javax.activation.DataSource;
 import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 import org.quartz.DateBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
@@ -31,6 +33,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -79,8 +82,10 @@ public class CaseReqController {
 	@Autowired
 	private CaseReqPdfService caseReqPdfService;
 
-	@Autowired
-	CaseReqValidator reqValidator;
+	@InitBinder
+	public void setValidator(DataBinder binder) {
+		binder.setValidator(new CaseReqValidator());
+	}
 
 	/**
 	 * Index.
@@ -164,11 +169,11 @@ public class CaseReqController {
 
 	@RequestMapping("/caseReq/createOrUpdateCaseReq")
 	@ResponseBody
-	public String createOrUpdateCaseReq(Model model, CaseReq caseReq, BindingResult result) {
+	public String createOrUpdateCaseReq(Model model, @Valid CaseReq caseReq, BindingResult result) {
 		List<Object> errorList = new ArrayList<>();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
-		reqValidator.validate(caseReq, result);
+//		reqValidator.validate(caseReq, result);
 
 		if (result.hasErrors()) { // 現在表示執行的驗證出現錯誤
 			Iterator<ObjectError> iterator = result.getAllErrors().iterator(); // 獲取全部錯誤信息
