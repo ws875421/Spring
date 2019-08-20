@@ -1,5 +1,7 @@
 package com.webcomm.oa.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,6 +14,9 @@ import com.webcomm.oa.domain.CaseReq;
 @Repository
 public interface CaseReqRepository
 		extends JpaRepository<CaseReq, String>, JpaSpecificationExecutor<CaseReq>, CrudRepository<CaseReq, String> {
+
+	List<CaseReq> findByCaseNoAndWorkitem(String caseNo, String workitem);
+	List<CaseReq> findByCaseNoOrWorkitem(String caseNo, String workitem);
 
 //	@Modifying//JPQL
 //	@Query("delete CaseReq where CASE_NO in ?1")

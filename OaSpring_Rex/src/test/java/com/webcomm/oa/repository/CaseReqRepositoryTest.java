@@ -32,6 +32,8 @@ import com.webcomm.oa.data.CaseTypeEnum;
 import com.webcomm.oa.domain.CaseReq;
 import com.webcomm.oa.searchbean.CaseReqSearchBean;
 
+import junit.framework.Assert;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OaSpringRexApplication.class)
 @Transactional
@@ -59,13 +61,21 @@ public class CaseReqRepositoryTest {
 //		caseReqRepository.save(caseReq);
 //	}
 
-//	@Test
-//	@Rollback(value = false)
-//	public void findUserTest() {
-//		CaseReq caseReq = caseReqRepository.getOne("201900047");
-//		Assert.assertEquals(caseReq.getWorkitem(),"工作項目6");
-//	
-//	}
+	@Test
+	@Rollback(value = false)
+	public void findUserTest() {
+//		CaseReq caseReq = caseReqRepository.getOne("201900004");
+
+		System.out.println("###############################################");
+		for (CaseReq cAnd : caseReqRepository.findByCaseNoAndWorkitem("201900004", "工作項目4")) {
+			System.out.println("＊　And:" + cAnd);
+		}
+		System.out.println("###############################################");
+		for (CaseReq cOr : caseReqRepository.findByCaseNoOrWorkitem("201900004", "工作項目4")) {
+			System.out.println("＊　Or:" + cOr);
+		}
+		System.out.println("###############################################");
+	}
 
 //    @Test
 //    @Rollback(value = false)
@@ -88,62 +98,62 @@ public class CaseReqRepositoryTest {
 //		System.out.println(caseReqRepository.findAll());
 //	}
 
-	@Test
-	@Rollback(value = false)
-	public void getAll2() {
-		CaseReqSearchBean caseReqSearchBean = new CaseReqSearchBean();
-		caseReqSearchBean.setCaseLevel("0");
-		caseReqSearchBean.setCaseType("0");
-		caseReqSearchBean.setHostUnit("0"); // 2019-04-01
-		caseReqSearchBean.setCohostUnit("0");// 2019-05-31
-		caseReqSearchBean.setStart(new GregorianCalendar(2019, 3, 28).getTime());
-		caseReqSearchBean.setEnd(new GregorianCalendar(2019, 4, 31).getTime());
-		System.out.println("#caseReqSearchBean : " + caseReqSearchBean);
-
-		for (CaseReq c : caseReqRepository.findAll(getSpecification(caseReqSearchBean))) {
-			System.out.println(c);
-		}
-
-	}
-
-	static Specification<CaseReq> getSpecification(CaseReqSearchBean caseReqSearchBean) {
-		Specification<CaseReq> specification = new Specification<CaseReq>() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
-				List<Predicate> predicates = new ArrayList<>();
-
-				if (!"0".equals(caseReqSearchBean.getCaseType())) {
-					predicates.add(criteriaBuilder.equal(root.get("caseType"),
-							CaseTypeEnum.getEnum(Integer.parseInt(caseReqSearchBean.getCaseType()))));
-				}
-				if (!"0".equals(caseReqSearchBean.getCaseLevel())) {
-					predicates.add(criteriaBuilder.equal(root.get("caseLevel"),
-							CaseLevelEnum.getEnum(Integer.parseInt(caseReqSearchBean.getCaseLevel()))));
-				}
-				if (!"0".equals(caseReqSearchBean.getHostUnit())) {
-					predicates.add(criteriaBuilder.equal(root.get("hostEmployee").get("unit").get("unitId"),
-							caseReqSearchBean.getHostUnit()));
-				}
-				if (!"0".equals(caseReqSearchBean.getCohostUnit())) {
-					predicates.add(criteriaBuilder.equal(root.get("cohostEmployee").get("unit").get("unitId"),
-							caseReqSearchBean.getCohostUnit()));
-				}
-				if (!(null == caseReqSearchBean.getStart())) {
-					System.out.println();
-					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("creattime").as(Date.class),
-							caseReqSearchBean.getStart()));
-				}
-				if (!(null == caseReqSearchBean.getEnd())) {
-					predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("creattime").as(Date.class),
-							caseReqSearchBean.getEnd()));
-				}
-
-				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-			}
-		};
-		return specification;
-	}
+//	@Test
+//	@Rollback(value = false)
+//	public void getAll2() {
+//		CaseReqSearchBean caseReqSearchBean = new CaseReqSearchBean();
+//		caseReqSearchBean.setCaseLevel("0");
+//		caseReqSearchBean.setCaseType("0");
+//		caseReqSearchBean.setHostUnit("0"); // 2019-04-01
+//		caseReqSearchBean.setCohostUnit("0");// 2019-05-31
+//		caseReqSearchBean.setStart(new GregorianCalendar(2019, 3, 28).getTime());
+//		caseReqSearchBean.setEnd(new GregorianCalendar(2019, 4, 31).getTime());
+//		System.out.println("#caseReqSearchBean : " + caseReqSearchBean);
+//
+//		for (CaseReq c : caseReqRepository.findAll(getSpecification(caseReqSearchBean))) {
+//			System.out.println(c);
+//		}
+//
+//	}
+//
+//	static Specification<CaseReq> getSpecification(CaseReqSearchBean caseReqSearchBean) {
+//		Specification<CaseReq> specification = new Specification<CaseReq>() {
+//			@SuppressWarnings("unchecked")
+//			@Override
+//			public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+//				List<Predicate> predicates = new ArrayList<>();
+//
+//				if (!"0".equals(caseReqSearchBean.getCaseType())) {
+//					predicates.add(criteriaBuilder.equal(root.get("caseType"),
+//							CaseTypeEnum.getEnum(Integer.parseInt(caseReqSearchBean.getCaseType()))));
+//				}
+//				if (!"0".equals(caseReqSearchBean.getCaseLevel())) {
+//					predicates.add(criteriaBuilder.equal(root.get("caseLevel"),
+//							CaseLevelEnum.getEnum(Integer.parseInt(caseReqSearchBean.getCaseLevel()))));
+//				}
+//				if (!"0".equals(caseReqSearchBean.getHostUnit())) {
+//					predicates.add(criteriaBuilder.equal(root.get("hostEmployee").get("unit").get("unitId"),
+//							caseReqSearchBean.getHostUnit()));
+//				}
+//				if (!"0".equals(caseReqSearchBean.getCohostUnit())) {
+//					predicates.add(criteriaBuilder.equal(root.get("cohostEmployee").get("unit").get("unitId"),
+//							caseReqSearchBean.getCohostUnit()));
+//				}
+//				if (!(null == caseReqSearchBean.getStart())) {
+//					System.out.println();
+//					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("creattime").as(Date.class),
+//							caseReqSearchBean.getStart()));
+//				}
+//				if (!(null == caseReqSearchBean.getEnd())) {
+//					predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("creattime").as(Date.class),
+//							caseReqSearchBean.getEnd()));
+//				}
+//
+//				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+//			}
+//		};
+//		return specification;
+//	}
 
 //	@Test
 //	@Rollback(value = false)
