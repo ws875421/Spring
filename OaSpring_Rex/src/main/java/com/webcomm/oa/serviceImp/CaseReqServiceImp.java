@@ -1,6 +1,8 @@
 package com.webcomm.oa.serviceImp;
 
 import java.util.ArrayList;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +26,7 @@ import com.webcomm.oa.data.CaseTypeEnum;
 import com.webcomm.oa.domain.CaseReq;
 import com.webcomm.oa.domain.Employee;
 import com.webcomm.oa.domain.Unit;
+import com.webcomm.oa.exception.CustomGenericException;
 import com.webcomm.oa.repository.CaseReqRepository;
 import com.webcomm.oa.repository.EmployeeRepository;
 import com.webcomm.oa.repository.UnitRepository;
@@ -101,22 +104,20 @@ public class CaseReqServiceImp implements CaseReqService {
 	 * domain.CaseReq)
 	 */
 	@Override
-	public void createOrUpdateCaseReq(CaseReq caseReq) {
+	public void createOrUpdateCaseReq(CaseReq caseReq) throws Exception {
 		// TODO Auto-generated method stub
 
 		if (caseReq == null) {
-			throw new RuntimeException("資料有誤");
+			throw new CustomGenericException("createOrUpdateCaseReq", "資料有誤");
 		}
-
 		if (StringUtils.isBlank(caseReq.getCaseNo())) {
-
+			caseReq.setCreattime(new Timestamp(System.currentTimeMillis()));
 			caseReqRepository.save(caseReq);
 
 		} else {
 			Optional<CaseReq> cvo = caseReqRepository.findById(caseReq.getCaseNo());
 
 			if (cvo.isPresent()) {
-
 				CaseReq cget = cvo.get();
 				cget.setCaseType(caseReq.getCaseType());
 				cget.setCaseLevel(caseReq.getCaseLevel());
@@ -127,11 +128,10 @@ public class CaseReqServiceImp implements CaseReqService {
 				cget.setWorkitem(caseReq.getWorkitem());
 				caseReqRepository.save(cget);
 			} else {
-				throw new RuntimeException("查無資料");
+				throw new CustomGenericException("createOrUpdateCaseReq", "查無資料");
 			}
 
 		}
-
 	}
 
 	/*
@@ -210,22 +210,36 @@ public class CaseReqServiceImp implements CaseReqService {
 	 */
 	static Specification<CaseReq> getSpecification(CaseReqSearchBean caseReqSearchBean) {
 		Specification<CaseReq> specification = new Specification<CaseReq>() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
 				List<Predicate> predicates = new ArrayList<>();
 
-				if (!"0".equals(caseReqSearchBean.getCaseType()))
+				if (!"0".equals(caseReqSearchBean.getCaseType())) {
 					predicates.add(criteriaBuilder.equal(root.get("caseType"),
 							CaseTypeEnum.getEnum(Integer.parseInt(caseReqSearchBean.getCaseType()))));
-				if (!"0".equals(caseReqSearchBean.getCaseLevel()))
+				}
+				if (!"0".equals(caseReqSearchBean.getCaseLevel())) {
 					predicates.add(criteriaBuilder.equal(root.get("caseLevel"),
 							CaseLevelEnum.getEnum(Integer.parseInt(caseReqSearchBean.getCaseLevel()))));
-				if (!"0".equals(caseReqSearchBean.getHostUnit()))
+				}
+				if (!"0".equals(caseReqSearchBean.getHostUnit())) {
 					predicates.add(criteriaBuilder.equal(root.get("hostEmployee").get("unit").get("unitId"),
 							caseReqSearchBean.getHostUnit()));
-				if (!"0".equals(caseReqSearchBean.getCohostUnit()))
+				}
+				if (!"0".equals(caseReqSearchBean.getCohostUnit())) {
 					predicates.add(criteriaBuilder.equal(root.get("cohostEmployee").get("unit").get("unitId"),
 							caseReqSearchBean.getCohostUnit()));
+				}
+				if (!(null == caseReqSearchBean.getStart())) {
+					System.out.println();
+					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("creattime").as(Date.class),
+							caseReqSearchBean.getStart()));
+				}
+				if (!(null == caseReqSearchBean.getEnd())) {
+					predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("creattime").as(Date.class),
+							caseReqSearchBean.getEnd()));
+				}
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
 			}

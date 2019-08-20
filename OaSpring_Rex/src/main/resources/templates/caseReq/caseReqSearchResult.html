@@ -31,6 +31,7 @@
 					<th><a class="sorted" sd:pagination-sort="startdate">辦理起日</a></th>
 					<th><a class="sorted" sd:pagination-sort="enddate">辦理迄日</a></th>
 					<th><a class="sorted" sd:pagination-sort="workitem">工作項目</a></th>
+					<th><a class="sorted" sd:pagination-sort="workitem">建檔時間</a></th>
 					<th>功能</th>
 				</tr>
 			</thead>
@@ -48,6 +49,7 @@
 					<td th:text="${aCaseReq.startdate}"></td>
 					<td th:text="${aCaseReq.enddate}" ></td>
 					<td th:text="${aCaseReq.workitem}"></td>
+					<td th:text="${#dates.format(aCaseReq.creattime, 'yyyy-MM-dd HH:mm:ss')}" ></td>
 					<td><button type="button" class="btn btn-light btn-sm" onClick="getOneForUpdate(this)" th:value="${aCaseReq.caseNo}"
 							style="width: 40px;">修改</button></td>
 				</tr>

@@ -15,6 +15,9 @@ function getCreateView() {
 				$('#CreateView').hide();
 				$('#container').show();
 			});
+		},
+		error : function(data) {
+			alert('發生錯誤');
 		}
 	});
 }
@@ -29,17 +32,21 @@ function saveCaseReq() {
 		data : form.serialize(), // serializes the form's elements.
 		success : function(data) {
 			console.log(data);
-			var obj = JSON.parse(data);
-			if (obj.status == 'error') {
-				alert(obj.errorMsg);
+
+			if (data.msg == 'error') {
+				alert(data.date.errorMsg);
 			}
-			if (obj.status == 'success') {
+			if (data.msg == 'success') {
+				console.log(data.date);
 				alert('新增成功');
 				$('#CreateView').hide();
 				$('#container').show();
 				queryCaseReqPageable();
 			}
 
+		},
+		error : function(data) {
+			alert('發生錯誤');
 		}
 	});
 }
@@ -55,17 +62,20 @@ function caseReqUpdate() {
 		success : function(data) {
 
 			console.log(data);
-			var obj = JSON.parse(data);
-			if (obj.status == 'error') {
-				alert(obj.errorMsg);
+//			var obj = JSON.parse(data);
+			if (data.msg == 'error') {
+				alert(data.date.errorMsg);
 			}
-			if (obj.status == 'success') {
+			if (data.msg == 'success') {
 				alert('修改成功');
 				$('#CreateView').hide();
 				$('#container').show();
 				queryCaseReqPageable();
 			}
 
+		},
+		error : function(data) {
+			alert('發生錯誤');
 		}
 	});
 }
@@ -86,6 +96,9 @@ function getOneForUpdate(e) {
 				$('#CreateView').hide();
 				$('#container').show();
 			});
+		},
+		error : function(data) {
+			alert('發生錯誤');
 		}
 	});
 
@@ -115,6 +128,9 @@ function queryCaseReqPageable(e) {
 				e.preventDefault();
 				Pageable(this.href);
 			});
+		},
+		error : function(data) {
+			alert('發生錯誤');
 		}
 	});
 
@@ -162,6 +178,9 @@ function deleteCaseReqs() {
 					console.log("#" + data);
 					alert(data);
 					queryCaseReqPageable();
+				},
+				error : function(data) {
+					alert('發生錯誤');
 				}
 			});
 			queryCaseReqPageable();

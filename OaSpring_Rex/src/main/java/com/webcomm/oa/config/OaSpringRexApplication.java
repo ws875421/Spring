@@ -14,7 +14,7 @@ import com.webcomm.oa.validator.CaseReqValidator;
 
 @SpringBootApplication
 @ComponentScan(basePackages = { "com.webcomm.oa.controller", "com.webcomm.oa.service", "com.webcomm.oa.config",
-		"com.webcomm.oa.validator", "com.webcomm.oa.serviceImp" })
+		"com.webcomm.oa.validator", "com.webcomm.oa.serviceImp","com.webcomm.oa.exception" })
 @EnableJpaRepositories(basePackages = { "com.webcomm.oa.repository" })
 @EntityScan(basePackages = { "com.webcomm.oa.domain" })
 public class OaSpringRexApplication implements CommandLineRunner {

@@ -1,5 +1,13 @@
 package com.webcomm.oa.searchbean;
 
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class CaseReqSearchBean.
@@ -17,6 +25,28 @@ public class CaseReqSearchBean {
 
 	/** The cohost unit. */
 	private String cohostUnit;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date start;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date end;
+
+	public Date getStart() {
+		return start;
+	}
+
+	public void setStart(Date start) {
+		this.start = start;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
+
+	public void setEnd(Date end) {
+		this.end = end;
+	}
 
 	/**
 	 * Instantiates a new case req search bean.
@@ -101,7 +131,7 @@ public class CaseReqSearchBean {
 	@Override
 	public String toString() {
 		return "CaseReqSearchBean [caseLevel=" + caseLevel + ", caseType=" + caseType + ", hostUnit=" + hostUnit
-				+ ", cohostUnit=" + cohostUnit + "]";
+				+ ", cohostUnit=" + cohostUnit + ", start=" + start + ", end=" + end + "]";
 	}
 
 }

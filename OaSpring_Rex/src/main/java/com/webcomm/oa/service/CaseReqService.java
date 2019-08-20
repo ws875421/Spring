@@ -18,7 +18,7 @@ public interface CaseReqService {
 	
 	public List<CaseReq> listAllCaseReq();
 
-	public void createOrUpdateCaseReq(CaseReq caseReq);
+	public void createOrUpdateCaseReq(CaseReq caseReq)throws Exception;
 
 	public List<CaseReq> queryCaseReqList(CaseReqSearchBean caseReqSearchBean);
 

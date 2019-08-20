@@ -37,6 +37,7 @@ import org.springframework.validation.DataBinder;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,11 +47,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.format.datetime.DateFormatter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.webcomm.oa.batch.MailCaseReqReportJob;
 import com.webcomm.oa.domain.CaseReq;
+import com.webcomm.oa.exception.CustomGenericException;
+import com.webcomm.oa.result.ResultBeen;
 import com.webcomm.oa.service.CaseReqPdfService;
 import com.webcomm.oa.service.CaseReqService;
 import com.webcomm.oa.service.MailService;
@@ -82,10 +86,18 @@ public class CaseReqController {
 	@Autowired
 	private CaseReqPdfService caseReqPdfService;
 
-	@InitBinder
-	public void setValidator(DataBinder binder) {
-		binder.setValidator(new CaseReqValidator());
-	}
+	@Autowired
+	private CaseReqValidator reqValidator;
+
+//	@InitBinder(value = "command")
+//	public void setValidator(WebDataBinder binder) {
+//		binder.setValidator(new CaseReqValidator());
+//	}
+
+//	@InitBinder
+//	public void intDate(WebDataBinder dataBinder) {
+//		dataBinder.addCustomFormatter(new DateFormatter("yyyy-MM-dd"));
+//	}
 
 	/**
 	 * Index.
@@ -152,7 +164,6 @@ public class CaseReqController {
 	public String getSearchResultView(
 			@PageableDefault(size = 5, sort = { "caseNo" }, direction = Sort.Direction.ASC) Pageable pageable,
 			Model model, CaseReqSearchBean caseReqSearchBean) {
-
 		model.addAttribute("pageable", pageable);
 		model.addAttribute("queryCaseReqList", caseReqService.queryCaseReqPageable(caseReqSearchBean, pageable));
 
@@ -164,16 +175,16 @@ public class CaseReqController {
 	 *
 	 * @param model   the model
 	 * @param caseReq the case req
-	 * @return the string
+	 * @return the ResultBeen
+	 * @throws Exception
 	 */
-
 	@RequestMapping("/caseReq/createOrUpdateCaseReq")
 	@ResponseBody
-	public String createOrUpdateCaseReq(Model model, @Valid CaseReq caseReq, BindingResult result) {
+	public ResultBeen<Object> createOrUpdateCaseReq(Model model, @Valid CaseReq caseReq, BindingResult result)
+			throws Exception {
 		List<Object> errorList = new ArrayList<>();
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
-//		reqValidator.validate(caseReq, result);
+		reqValidator.validate(caseReq, result);
 
 		if (result.hasErrors()) { // 現在表示執行的驗證出現錯誤
 			Iterator<ObjectError> iterator = result.getAllErrors().iterator(); // 獲取全部錯誤信息
@@ -184,26 +195,28 @@ public class CaseReqController {
 					errorList.add(error.getDefaultMessage());
 				}
 			}
+
 			HashMap<String, Object> map = new HashMap<>();
 			map.put("status", "error");
 			map.put("errorMsg", errorList);
 
-			String jsonStr = gson.toJson(map);
-			return jsonStr;
+			ResultBeen<Object> resultBeen = new ResultBeen<Object>();
+			resultBeen.setMsg("error");
+			resultBeen.setCode(ResultBeen.ERROR);
+			resultBeen.setDate(map);
+
+			return resultBeen;
+
 		} else {
+			caseReqService.createOrUpdateCaseReq(caseReq);
+
 			HashMap<String, Object> map = new HashMap<>();
-			try {
-				caseReqService.createOrUpdateCaseReq(caseReq);
-				map.put("status", "success");
-				String jsonStr = gson.toJson(map);
-				return jsonStr;
-			} catch (Exception e) {
-				errorList.add(e.getMessage());
-				map.put("status", "error");
-				map.put("errorMsg", errorList);
-				String jsonStr = gson.toJson(map);
-				return jsonStr;
-			}
+			map.put("status", "success");
+			ResultBeen<Object> resultBeen = new ResultBeen<Object>();
+			resultBeen.setDate(map);
+
+			return resultBeen;
+
 		}
 
 	}

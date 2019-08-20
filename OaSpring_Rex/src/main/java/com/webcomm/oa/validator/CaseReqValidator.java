@@ -6,7 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import com.webcomm.oa.domain.CaseReq;
 
-
+@Component
 public class CaseReqValidator implements Validator {
 
 	@Override

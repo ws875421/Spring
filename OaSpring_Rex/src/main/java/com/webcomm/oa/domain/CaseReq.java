@@ -68,6 +68,18 @@ public class CaseReq implements Serializable {
 //	@Size(max = 14, message = "訊息過長")
 	private String workitem;
 
+	@Column(name = "CREATTIME")
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+	private Date creattime;
+
+	public Date getCreattime() {
+		return creattime;
+	}
+
+	public void setCreattime(Date creattime) {
+		this.creattime = creattime;
+	}
+
 	public CaseReq() {
 		super();
 	}
@@ -138,9 +150,9 @@ public class CaseReq implements Serializable {
 
 	@Override
 	public String toString() {
-		return "CaseReqVO [caseNo=" + caseNo + ", caseType=" + caseType + ", caseLevel=" + caseLevel + ", hostEmployee="
+		return "CaseReq [caseNo=" + caseNo + ", caseType=" + caseType + ", caseLevel=" + caseLevel + ", hostEmployee="
 				+ hostEmployee + ", cohostEmployee=" + cohostEmployee + ", startdate=" + startdate + ", enddate="
-				+ enddate + ", workitem=" + workitem + "]";
+				+ enddate + ", workitem=" + workitem + ", creattime=" + creattime + "]";
 	}
 
 }

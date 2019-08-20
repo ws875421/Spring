@@ -11,6 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
+
 </head>
 <body>
 	<div th:include="layout/header :: header"></div>
@@ -22,6 +23,20 @@
 		$(document).ready(function() {
 			$('#startdate,#enddate').mask('0000/00/00');
 		});
+
+		$(document).ready(function() {
+			$('#end,#start').change(function() {
+				// 				alert($('#start').val());
+				if ($('#start').val() >= $('#end').val()) {
+					alert("結束日需大於起始日!");
+					$('#end').val("");
+				}
+				// 				alert($('#end').val());
+			});
+		});
 	</script>
+
+
+
 </body>
 </html>
