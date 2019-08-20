@@ -1,8 +1,8 @@
 package com.webcomm.oa.serviceImp;
 
-import java.util.ArrayList;
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,12 +12,13 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,8 @@ import com.webcomm.oa.service.CaseReqService;
 @Service
 @Transactional
 public class CaseReqServiceImp implements CaseReqService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(CaseReqServiceImp.class);
 
 	/** The unit repository. */
 	@Autowired
@@ -231,13 +234,14 @@ public class CaseReqServiceImp implements CaseReqService {
 					predicates.add(criteriaBuilder.equal(root.get("cohostEmployee").get("unit").get("unitId"),
 							caseReqSearchBean.getCohostUnit()));
 				}
-				if (!(null == caseReqSearchBean.getStart())) {
-					System.out.println();
+				if (null != caseReqSearchBean.getStart()) {
+					LOG.info("## start:{}",caseReqSearchBean.getStart());
 					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("creattime").as(Date.class),
 							caseReqSearchBean.getStart()));
 				}
-				if (!(null == caseReqSearchBean.getEnd())) {
-					predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("creattime").as(Date.class),
+				if (null != caseReqSearchBean.getEnd()) {
+					LOG.info("## end:{}",caseReqSearchBean.getEnd());
+					predicates.add(criteriaBuilder.lessThan(root.get("creattime").as(Date.class),
 							caseReqSearchBean.getEnd()));
 				}
 

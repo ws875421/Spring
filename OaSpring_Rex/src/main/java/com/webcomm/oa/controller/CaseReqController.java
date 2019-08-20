@@ -7,7 +7,9 @@ import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +28,8 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.quartz.DateBuilder.IntervalUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -43,6 +47,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -89,14 +94,11 @@ public class CaseReqController {
 	@Autowired
 	private CaseReqValidator reqValidator;
 
+	private static final Logger LOG = LoggerFactory.getLogger(CaseReqController.class);
+
 //	@InitBinder(value = "command")
 //	public void setValidator(WebDataBinder binder) {
 //		binder.setValidator(new CaseReqValidator());
-//	}
-
-//	@InitBinder
-//	public void intDate(WebDataBinder dataBinder) {
-//		dataBinder.addCustomFormatter(new DateFormatter("yyyy-MM-dd"));
 //	}
 
 	/**
@@ -164,9 +166,23 @@ public class CaseReqController {
 	public String getSearchResultView(
 			@PageableDefault(size = 5, sort = { "caseNo" }, direction = Sort.Direction.ASC) Pageable pageable,
 			Model model, CaseReqSearchBean caseReqSearchBean) {
-		model.addAttribute("pageable", pageable);
-		model.addAttribute("queryCaseReqList", caseReqService.queryCaseReqPageable(caseReqSearchBean, pageable));
+		LOG.info(caseReqSearchBean.toString());
 
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(caseReqSearchBean.getEnd());
+		calendar.add(calendar.DATE, 1);// 把日期往后增加一天.整数往后推,负数往前移动
+
+		caseReqSearchBean.setEnd(calendar.getTime());
+
+		model.addAttribute("pageable", pageable);
+		Page<CaseReq> queryCaseReqList = caseReqService.queryCaseReqPageable(caseReqSearchBean, pageable);
+		int size = queryCaseReqList.getSize();
+		LOG.info("count:{}", size);
+		for (CaseReq cc : queryCaseReqList) {
+			LOG.info(String.valueOf(cc.getCaseNo()));
+		}
+
+		model.addAttribute("queryCaseReqList", caseReqService.queryCaseReqPageable(caseReqSearchBean, pageable));
 		return "caseReq/caseReqSearchResult";
 	}
 
@@ -180,10 +196,9 @@ public class CaseReqController {
 	 */
 	@RequestMapping("/caseReq/createOrUpdateCaseReq")
 	@ResponseBody
-	public ResultBeen<Object> createOrUpdateCaseReq(Model model, @Valid CaseReq caseReq, BindingResult result)
+	public ResultBeen<Object> createOrUpdateCaseReq(Model model, CaseReq caseReq, BindingResult result)
 			throws Exception {
 		List<Object> errorList = new ArrayList<>();
-
 		reqValidator.validate(caseReq, result);
 
 		if (result.hasErrors()) { // 現在表示執行的驗證出現錯誤
@@ -196,26 +211,16 @@ public class CaseReqController {
 				}
 			}
 
-			HashMap<String, Object> map = new HashMap<>();
-			map.put("status", "error");
-			map.put("errorMsg", errorList);
-
 			ResultBeen<Object> resultBeen = new ResultBeen<Object>();
 			resultBeen.setMsg("error");
 			resultBeen.setCode(ResultBeen.ERROR);
-			resultBeen.setDate(map);
+			resultBeen.setDate(errorList);
 
 			return resultBeen;
 
 		} else {
 			caseReqService.createOrUpdateCaseReq(caseReq);
-
-			HashMap<String, Object> map = new HashMap<>();
-			map.put("status", "success");
-			ResultBeen<Object> resultBeen = new ResultBeen<Object>();
-			resultBeen.setDate(map);
-
-			return resultBeen;
+			return new ResultBeen<Object>();
 
 		}
 

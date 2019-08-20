@@ -25,6 +25,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.webcomm.oa.data.CaseLevelEnum;
 import com.webcomm.oa.data.CaseTypeEnum;
 
+/**
+ * 承辦案件entuty
+ * @author user
+ *
+ */
 @Entity
 @Table(name = "CASE_REQ")
 public class CaseReq implements Serializable {

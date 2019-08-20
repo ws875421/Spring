@@ -12,6 +12,10 @@ import com.webcomm.oa.searchbean.CaseReqSearchBean;
 
 public interface CaseReqService {
 
+	/**
+	 * 部門清單查詢
+	 * @return
+	 */
 	public List<Unit> listAllUnit();
 
 	public List<Employee> listAllEmployee();
@@ -26,6 +30,10 @@ public interface CaseReqService {
 
 	public void deleteCaseReqs(List<String> caseNos);
 	
+	/**
+	 * 刪除XXXXX
+	 * @param caseNo 案件編號
+	 */
 	public void deleteCaseReqs(String caseNo);
 
 	public Page<CaseReq> queryCaseReqPageable(CaseReqSearchBean caseReqSearchBean, Pageable pageable);

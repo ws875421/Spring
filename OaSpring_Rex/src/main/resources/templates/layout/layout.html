@@ -24,16 +24,21 @@
 			$('#startdate,#enddate').mask('0000/00/00');
 		});
 
-		$(document).ready(function() {
-			$('#end,#start').change(function() {
-				// 				alert($('#start').val());
-				if ($('#start').val() >= $('#end').val()) {
-					alert("結束日需大於起始日!");
-					$('#end').val("");
-				}
-				// 				alert($('#end').val());
-			});
-		});
+// 		$(document).ready(
+// 				function() {
+// 					$('#end,#start').change(
+// 							function() {
+// 								// 				alert($('#start').val());
+// 								if ($('#start').val() >= $('#end').val()
+// 										&& $('#end').val() != ""
+// 										&& $('#start').val() != "") {
+
+// 									alert("結束日需大於起始日!");
+// 									$('#end').val("");
+// 								}
+// 								// 				alert($('#end').val());
+// 							});
+// 				});
 	</script>
 
 

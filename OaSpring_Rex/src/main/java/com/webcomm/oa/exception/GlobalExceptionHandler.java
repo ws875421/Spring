@@ -13,37 +13,38 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.webcomm.oa.result.ResultBeen;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
 	@ResponseBody
 	@ExceptionHandler(value = CustomGenericException.class)
-	public String handleCustomException(CustomGenericException ex) {
+	public ResultBeen<Object> handleCustomException(CustomGenericException ex) {
+
+		System.out.println("@");
 
 		List<Object> errorList = new ArrayList<>();
 		errorList.add(ex.getErrCode() + ":" + ex.getErrMsg());
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("status", "error");
-		map.put("errorMsg", errorList);
-		String jsonStr = gson.toJson(map);
-		return jsonStr;
+		ResultBeen<Object> resultBeen = new ResultBeen<Object>();
+		resultBeen.setMsg("error");
+		resultBeen.setCode(ResultBeen.ERROR);
+		resultBeen.setDate(errorList);
+		return resultBeen;
 
 	}
 
 	@ResponseBody
 	@ExceptionHandler(value = Exception.class)
-	public String handleException(Exception ex) {
+	public ResultBeen<Object> handleException(Exception ex) {
 
 		List<Object> errorList = new ArrayList<>();
-		errorList.add(ex.getMessage());
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("status", "error");
-		map.put("errorMsg", errorList);
-		String jsonStr = gson.toJson(map);
-		return jsonStr;
+		errorList.add("忙線中");
+		ResultBeen<Object> resultBeen = new ResultBeen<Object>();
+		resultBeen.setMsg("error");
+		resultBeen.setCode(ResultBeen.ERROR);
+		resultBeen.setDate(errorList);
+		return resultBeen;
 
 	}
 

@@ -25,10 +25,10 @@ public class CaseReqValidator implements Validator {
 		if (caseReq.getWorkitem().length() >= 14) {
 			e.rejectValue("workitem", "CaseReq", "工作項目:訊息過長");
 		}
-		if (caseReq.getStartdate() == null) {
+		if (caseReq.getStartdate() == null ) {
 			e.rejectValue("startdate", "CaseReq", "辦理啟日:日期有誤");
 		}
-		if (caseReq.getEnddate() == null) {
+		if (caseReq.getEnddate() == null ) {
 			e.rejectValue("enddate", "CaseReq", "辦理迄日:日期有誤");
 		}
 		if (caseReq.getEnddate().before(caseReq.getStartdate())) {

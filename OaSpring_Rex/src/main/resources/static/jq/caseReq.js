@@ -34,7 +34,7 @@ function saveCaseReq() {
 			console.log(data);
 
 			if (data.msg == 'error') {
-				alert(data.date.errorMsg);
+				alert(data.date);
 			}
 			if (data.msg == 'success') {
 				console.log(data.date);
