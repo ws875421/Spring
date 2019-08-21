@@ -9,6 +9,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
+/**
+ * 承辦案件 自定義主鍵
+ * 
+ * @author user
+ *
+ */
 public class MyGenerator implements IdentifierGenerator {
 
 	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {

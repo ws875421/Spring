@@ -1,5 +1,11 @@
 package com.webcomm.oa.data;
 
+/**
+ * 列管層級列舉
+ * 
+ * @author user
+ *
+ */
 public enum CaseLevelEnum {
 	Default_ALL(0, "全部"), ReportForControl(1, "報部列管"), DeptControl(2, "科室列管"), BureauControl(3, "局列管"),
 	NoControl(4, "不列管");

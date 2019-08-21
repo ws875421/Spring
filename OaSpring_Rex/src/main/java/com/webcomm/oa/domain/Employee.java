@@ -9,8 +9,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
-
+/**
+ * 員工Entity
+ * 
+ * @author user
+ *
+ */
 @Entity
 @Table(name = "EMPLOYEE")
 public class Employee implements Serializable {

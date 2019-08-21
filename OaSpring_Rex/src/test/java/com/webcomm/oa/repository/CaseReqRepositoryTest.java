@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -61,21 +62,21 @@ public class CaseReqRepositoryTest {
 //		caseReqRepository.save(caseReq);
 //	}
 
-	@Test
-	@Rollback(value = false)
-	public void findUserTest() {
-//		CaseReq caseReq = caseReqRepository.getOne("201900004");
-
-		System.out.println("###############################################");
-		for (CaseReq cAnd : caseReqRepository.findByCaseNoAndWorkitem("201900004", "工作項目4")) {
-			System.out.println("＊　And:" + cAnd);
-		}
-		System.out.println("###############################################");
-		for (CaseReq cOr : caseReqRepository.findByCaseNoOrWorkitem("201900004", "工作項目4")) {
-			System.out.println("＊　Or:" + cOr);
-		}
-		System.out.println("###############################################");
-	}
+//	@Test
+//	@Rollback(value = false)
+//	public void findUserTest() {
+////		CaseReq caseReq = caseReqRepository.getOne("201900004");
+//
+//		System.out.println("###############################################");
+//		for (CaseReq cAnd : caseReqRepository.findByCaseNoAndWorkitem("201900004", "工作項目4")) {
+//			System.out.println("＊　And:" + cAnd);
+//		}
+//		System.out.println("###############################################");
+//		for (CaseReq cOr : caseReqRepository.findByCaseNoOrWorkitem("201900004", "工作項目4")) {
+//			System.out.println("＊　Or:" + cOr);
+//		}
+//		System.out.println("###############################################");
+//	}
 
 //    @Test
 //    @Rollback(value = false)
@@ -87,9 +88,17 @@ public class CaseReqRepositoryTest {
 //	@Test
 //	@Rollback(value = false)
 //	public void deleteUserTest() {
-//		String[] casenos = { "201900019", "201900020" };
-////		System.out.println(casenos);
-//		caseReqRepository.deleteCaseNos(casenos);
+//		String[] casenos = { "201900014", "201900015" };
+//
+//		List<CaseReq> list = new ArrayList<>();
+//
+//		for (String s : casenos) {
+//			Optional<CaseReq> Opcas = caseReqRepository.findById(s);
+//			list.add(Opcas.get());
+//		}
+//
+//		System.out.println(list);
+//		caseReqRepository.deleteByCaseReqIn(list);
 //	}
 
 //	@Test

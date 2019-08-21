@@ -34,12 +34,12 @@ import com.webcomm.oa.repository.UnitRepository;
 import com.webcomm.oa.searchbean.CaseReqSearchBean;
 import com.webcomm.oa.service.CaseReqService;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class CaseReqServiceImpl.
+ * 承辦案件Service實做
+ * 
+ * @author user
+ *
  */
-//@Component("caseReqService")
-
 @Service
 @Transactional
 public class CaseReqServiceImp implements CaseReqService {
@@ -235,14 +235,14 @@ public class CaseReqServiceImp implements CaseReqService {
 							caseReqSearchBean.getCohostUnit()));
 				}
 				if (null != caseReqSearchBean.getStart()) {
-					LOG.info("## start:{}",caseReqSearchBean.getStart());
+					LOG.info("## start:{}", caseReqSearchBean.getStart());
 					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("creattime").as(Date.class),
 							caseReqSearchBean.getStart()));
 				}
 				if (null != caseReqSearchBean.getEnd()) {
-					LOG.info("## end:{}",caseReqSearchBean.getEnd());
-					predicates.add(criteriaBuilder.lessThan(root.get("creattime").as(Date.class),
-							caseReqSearchBean.getEnd()));
+					LOG.info("## end:{}", caseReqSearchBean.getEnd());
+					predicates.add(
+							criteriaBuilder.lessThan(root.get("creattime").as(Date.class), caseReqSearchBean.getEnd()));
 				}
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));

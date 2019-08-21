@@ -1,5 +1,11 @@
 package com.webcomm.oa.data;
 
+/**
+ * 案件類型
+ * 
+ * @author user
+ *
+ */
 public enum CaseTypeEnum {
 
 	Default_ALL(0, "全部"), General(1, "總綱目"), TempControl(2, "臨時列管"), NoControl(3, "非列管(原A類案件)");
@@ -44,7 +50,5 @@ public enum CaseTypeEnum {
 	public static CaseTypeEnum getEnum(String label) {
 		return CaseTypeEnum.valueOf(label);
 	}
-	
-
 
 }

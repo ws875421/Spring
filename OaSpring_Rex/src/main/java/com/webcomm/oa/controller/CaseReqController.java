@@ -71,23 +71,22 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 import com.webcomm.oa.searchbean.CaseReqSearchBean;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class CaseReqController.
+ * 承辦案件 Controller
+ * 
+ * @author user
+ *
  */
 @Controller
 @RequestMapping("/")
 public class CaseReqController {
 
-	/** The case req service. */
 	@Autowired
 	private CaseReqService caseReqService;
 
-	/** The scheduler. */
 	@Autowired
 	private MailService mailService;
 
-	/** The case req pdf service. */
 	@Autowired
 	private CaseReqPdfService caseReqPdfService;
 
@@ -102,19 +101,19 @@ public class CaseReqController {
 //	}
 
 	/**
-	 * Index.
+	 * 首頁
 	 *
 	 * @param model    the model
 	 * @param pageable the pageable
 	 * @return the string
 	 */
 	@RequestMapping("/index")
-	public String index(Model model, @SortDefault("username") Pageable pageable) {
+	public String index(Model model) {
 		return "index";
 	}
 
 	/**
-	 * Gets the search view.
+	 * 搜尋畫面
 	 *
 	 * @param model the model
 	 * @return the search view
@@ -126,7 +125,7 @@ public class CaseReqController {
 	}
 
 	/**
-	 * Gets the creates the view.
+	 * 新增畫面
 	 *
 	 * @param model   the model
 	 * @param caseReq the case req
@@ -141,7 +140,7 @@ public class CaseReqController {
 	}
 
 	/**
-	 * Gets the update view.
+	 * 修改畫面
 	 *
 	 * @param model   the model
 	 * @param caseReq the case req
@@ -155,7 +154,7 @@ public class CaseReqController {
 	}
 
 	/**
-	 * Gets the search result view.
+	 * 查詢承辦人應辦清冊
 	 *
 	 * @param pageable          the pageable
 	 * @param model             the model
@@ -169,10 +168,11 @@ public class CaseReqController {
 		LOG.info(caseReqSearchBean.toString());
 
 		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(caseReqSearchBean.getEnd());
-		calendar.add(calendar.DATE, 1);// 把日期往后增加一天.整数往后推,负数往前移动
-
-		caseReqSearchBean.setEnd(calendar.getTime());
+		if (caseReqSearchBean.getEnd() != null) {
+			calendar.setTime(caseReqSearchBean.getEnd());
+			calendar.add(calendar.DATE, 1);// 把日期往后增加一天.整数往后推,负数往前移动
+			caseReqSearchBean.setEnd(calendar.getTime());
+		}
 
 		model.addAttribute("pageable", pageable);
 		Page<CaseReq> queryCaseReqList = caseReqService.queryCaseReqPageable(caseReqSearchBean, pageable);
@@ -187,7 +187,7 @@ public class CaseReqController {
 	}
 
 	/**
-	 * Creates the or update case req.
+	 * 新增or修改承辦人應辦清冊
 	 *
 	 * @param model   the model
 	 * @param caseReq the case req
@@ -227,24 +227,32 @@ public class CaseReqController {
 	}
 
 	/**
-	 * Delete case reqs.
+	 * 刪除承辦人應辦清冊
 	 *
 	 * @param caseNos the case nos
 	 * @return the string
 	 */
 	@RequestMapping("/caseReq/deleteCaseReq")
 	@ResponseBody
-	public String deleteCaseReqs(@RequestParam(value = "caseNos[]") String[] caseNos) {
+	public ResultBeen<Object> deleteCaseReqs(@RequestParam(value = "caseNos[]") String[] caseNos) {
 		int i = caseReqService.deleteCaseNos(caseNos);
+		ResultBeen<Object> resultBeen = new ResultBeen();
 		if (i == 0) {
-			return "資料不存在 ";
+			resultBeen.setMsg("ERROR");
+			resultBeen.setCode(1);
+			resultBeen.setDate("資料不存在");
+			return resultBeen;
 		}
-		return "成功! 刪除 " + (i) + " 筆 ";
+
+		else {
+			resultBeen.setDate("成功! 刪除 " + (i) + " 筆 ");
+			return resultBeen;
+		}
 
 	}
 
 	/**
-	 * Conver PDF.
+	 * 產生 PDF & 寄信
 	 *
 	 * @param response          the response
 	 * @param caseReqSearchBean the case req search bean

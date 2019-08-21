@@ -11,6 +11,12 @@ import org.springframework.stereotype.Component;
 
 import com.webcomm.oa.service.MailService;
 
+/**
+ * Scheduler 計時寄信
+ * 
+ * @author user
+ *
+ */
 @Component
 public class MailCaseReqReportJob implements Job {
 

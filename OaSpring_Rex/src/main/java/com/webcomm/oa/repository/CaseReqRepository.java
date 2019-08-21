@@ -11,12 +11,18 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.webcomm.oa.domain.CaseReq;
 
+/**
+ * 承辦案件JPA CaseReqJPA
+ * @author user
+ *
+ */
 @Repository
 public interface CaseReqRepository
 		extends JpaRepository<CaseReq, String>, JpaSpecificationExecutor<CaseReq>, CrudRepository<CaseReq, String> {
 
-	List<CaseReq> findByCaseNoAndWorkitem(String caseNo, String workitem);
-	List<CaseReq> findByCaseNoOrWorkitem(String caseNo, String workitem);
+	List<CaseReq> findByCaseNoAndWorkitem(String caseNos, String workitem);
+
+	List<CaseReq> findByCaseNoOrWorkitem(String caseNos, String workitem);
 
 //	@Modifying//JPQL
 //	@Query("delete CaseReq where CASE_NO in ?1")

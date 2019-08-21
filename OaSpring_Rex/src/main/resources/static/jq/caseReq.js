@@ -62,7 +62,7 @@ function caseReqUpdate() {
 		success : function(data) {
 
 			console.log(data);
-//			var obj = JSON.parse(data);
+			// var obj = JSON.parse(data);
 			if (data.msg == 'error') {
 				alert(data.date.errorMsg);
 			}
@@ -175,8 +175,12 @@ function deleteCaseReqs() {
 					caseNos : caseNos
 				},
 				success : function(data) {
-					console.log("#" + data);
-					alert(data);
+					console.log(data);
+					if (data.msg == 'success') {
+						alert(data.date);
+					} else {
+						alert(data.date);
+					}
 					queryCaseReqPageable();
 				},
 				error : function(data) {

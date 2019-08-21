@@ -1,5 +1,11 @@
 package com.webcomm.oa.exception;
 
+/**
+ * 自訂Exception
+ * 
+ * @author user
+ *
+ */
 public class CustomGenericException extends Exception {
 
 	private static final long serialVersionUID = 1L;

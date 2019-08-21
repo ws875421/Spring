@@ -2,6 +2,13 @@ package com.webcomm.oa.result;
 
 import java.io.Serializable;
 
+/**
+ * 統一回應物件
+ * 
+ * @author user
+ *
+ * @param <T>
+ */
 public class ResultBeen<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;

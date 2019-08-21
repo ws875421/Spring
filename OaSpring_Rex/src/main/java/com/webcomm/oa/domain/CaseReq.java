@@ -26,7 +26,7 @@ import com.webcomm.oa.data.CaseLevelEnum;
 import com.webcomm.oa.data.CaseTypeEnum;
 
 /**
- * 承辦案件entuty
+ * 承辦案件entity
  * @author user
  *
  */

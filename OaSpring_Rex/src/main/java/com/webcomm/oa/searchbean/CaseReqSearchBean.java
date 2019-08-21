@@ -8,9 +8,11 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class CaseReqSearchBean.
+ * 查詢條件
+ * 
+ * @author user
+ *
  */
 public class CaseReqSearchBean {
 

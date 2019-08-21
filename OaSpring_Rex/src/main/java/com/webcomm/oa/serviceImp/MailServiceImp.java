@@ -32,11 +32,12 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class MailServiceImpl.
+ * MailService實作
+ * 
+ * @author user
+ *
  */
-//@Component("mailService")
 @Service("mailService")
 public class MailServiceImp implements MailService {
 

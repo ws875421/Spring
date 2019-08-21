@@ -7,6 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 單位Entity
+ * 
+ * @author user
+ *
+ */
 @Entity
 @Table(name = "UNIT")
 public class Unit implements Serializable {

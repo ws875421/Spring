@@ -19,6 +19,12 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+/**
+ * 產生PDF 實做
+ * 
+ * @author user
+ *
+ */
 @Service
 public class CaseReqPdfServiceImp implements CaseReqPdfService {
 
