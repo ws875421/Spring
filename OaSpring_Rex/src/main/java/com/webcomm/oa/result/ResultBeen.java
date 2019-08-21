@@ -20,7 +20,7 @@ public class ResultBeen<T> implements Serializable {
 
 	private int code = SUCCESS;
 
-	private T date;
+	private T data;
 
 	public ResultBeen() {
 		super();
@@ -28,7 +28,7 @@ public class ResultBeen<T> implements Serializable {
 
 	public ResultBeen(T date) {
 		super();
-		this.date = date;
+		this.data = date;
 	}
 
 	public String getMsg() {
@@ -47,16 +47,16 @@ public class ResultBeen<T> implements Serializable {
 		this.code = code;
 	}
 
-	public T getDate() {
-		return date;
+	public T getData() {
+		return data;
 	}
 
-	public void setDate(T date) {
-		this.date = date;
+	public void setData(T data) {
+		this.data = data;
 	}
 
 	@Override
 	public String toString() {
-		return "ResultBeen [msg=" + msg + ", code=" + code + ", date=" + date + "]";
+		return "ResultBeen [msg=" + msg + ", code=" + code + ", date=" + data + "]";
 	}
 }

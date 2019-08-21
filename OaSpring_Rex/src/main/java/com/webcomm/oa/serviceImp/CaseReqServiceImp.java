@@ -187,9 +187,14 @@ public class CaseReqServiceImp implements CaseReqService {
 	 * @see com.webcomm.oa.service.CaseReqService#deleteCaseNos(java.lang.String[])
 	 */
 	@Override
-	public int deleteCaseNos(String[] caseNos) {
+	public int deleteCaseNos(String[] caseNos) throws Exception {
 
-		return caseReqRepository.deleteCaseNos(caseNos);
+		int i = caseReqRepository.deleteCaseNos(caseNos);
+		if (i == 0) {
+			throw new CustomGenericException("1", "資料不存在");
+		}
+		
+		return i;
 	}
 
 	/*

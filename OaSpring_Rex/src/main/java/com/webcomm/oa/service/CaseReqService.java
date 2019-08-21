@@ -92,5 +92,5 @@ public interface CaseReqService {
 	 * @param caseNos
 	 * @return 成功筆數
 	 */
-	public int deleteCaseNos(String[] caseNos);
+	public int deleteCaseNos(String[] caseNos)throws Exception ;
 }

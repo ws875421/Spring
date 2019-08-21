@@ -165,22 +165,17 @@ public class CaseReqController {
 	public String getSearchResultView(
 			@PageableDefault(size = 5, sort = { "caseNo" }, direction = Sort.Direction.ASC) Pageable pageable,
 			Model model, CaseReqSearchBean caseReqSearchBean) {
-		LOG.info(caseReqSearchBean.toString());
 
-		Calendar calendar = new GregorianCalendar();
+		Calendar calendar = Calendar.getInstance();
 		if (caseReqSearchBean.getEnd() != null) {
 			calendar.setTime(caseReqSearchBean.getEnd());
-			calendar.add(calendar.DATE, 1);// 把日期往后增加一天.整数往后推,负数往前移动
+			calendar.add(Calendar.DATE, 1);// 把日期往后增加一天.整数往后推,负数往前移动
 			caseReqSearchBean.setEnd(calendar.getTime());
 		}
 
 		model.addAttribute("pageable", pageable);
 		Page<CaseReq> queryCaseReqList = caseReqService.queryCaseReqPageable(caseReqSearchBean, pageable);
 		int size = queryCaseReqList.getSize();
-		LOG.info("count:{}", size);
-		for (CaseReq cc : queryCaseReqList) {
-			LOG.info(String.valueOf(cc.getCaseNo()));
-		}
 
 		model.addAttribute("queryCaseReqList", caseReqService.queryCaseReqPageable(caseReqSearchBean, pageable));
 		return "caseReq/caseReqSearchResult";
@@ -214,7 +209,7 @@ public class CaseReqController {
 			ResultBeen<Object> resultBeen = new ResultBeen<Object>();
 			resultBeen.setMsg("error");
 			resultBeen.setCode(ResultBeen.ERROR);
-			resultBeen.setDate(errorList);
+			resultBeen.setData(errorList);
 
 			return resultBeen;
 
@@ -231,23 +226,16 @@ public class CaseReqController {
 	 *
 	 * @param caseNos the case nos
 	 * @return the string
+	 * @throws Exception
 	 */
 	@RequestMapping("/caseReq/deleteCaseReq")
 	@ResponseBody
-	public ResultBeen<Object> deleteCaseReqs(@RequestParam(value = "caseNos[]") String[] caseNos) {
+	public ResultBeen<Object> deleteCaseReqs(@RequestParam(value = "caseNos[]") String[] caseNos) throws Exception {
 		int i = caseReqService.deleteCaseNos(caseNos);
-		ResultBeen<Object> resultBeen = new ResultBeen();
-		if (i == 0) {
-			resultBeen.setMsg("ERROR");
-			resultBeen.setCode(1);
-			resultBeen.setDate("資料不存在");
-			return resultBeen;
-		}
+		ResultBeen<Object> resultBeen = new ResultBeen<>();
 
-		else {
-			resultBeen.setDate("成功! 刪除 " + (i) + " 筆 ");
-			return resultBeen;
-		}
+		resultBeen.setData("成功! 刪除 " + (i) + " 筆 ");
+		return resultBeen;
 
 	}
 

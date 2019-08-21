@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
 		ResultBeen<Object> resultBeen = new ResultBeen<Object>();
 		resultBeen.setMsg("error");
 		resultBeen.setCode(ResultBeen.ERROR);
-		resultBeen.setDate(errorList);
+		resultBeen.setData(errorList);
 		return resultBeen;
 
 	}
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
 		ResultBeen<Object> resultBeen = new ResultBeen<Object>();
 		resultBeen.setMsg("error");
 		resultBeen.setCode(ResultBeen.ERROR);
-		resultBeen.setDate(errorList);
+		resultBeen.setData(errorList);
 		return resultBeen;
 
 	}

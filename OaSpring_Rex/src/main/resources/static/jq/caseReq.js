@@ -34,10 +34,10 @@ function saveCaseReq() {
 			console.log(data);
 
 			if (data.msg == 'error') {
-				alert(data.date);
+				alert(data.data);
 			}
 			if (data.msg == 'success') {
-				console.log(data.date);
+				console.log(data.data);
 				alert('新增成功');
 				$('#CreateView').hide();
 				$('#container').show();
@@ -64,7 +64,7 @@ function caseReqUpdate() {
 			console.log(data);
 			// var obj = JSON.parse(data);
 			if (data.msg == 'error') {
-				alert(data.date.errorMsg);
+				alert(data.data.errorMsg);
 			}
 			if (data.msg == 'success') {
 				alert('修改成功');
@@ -177,9 +177,9 @@ function deleteCaseReqs() {
 				success : function(data) {
 					console.log(data);
 					if (data.msg == 'success') {
-						alert(data.date);
+						alert(data.data);
 					} else {
-						alert(data.date);
+						alert(data.data);
 					}
 					queryCaseReqPageable();
 				},
