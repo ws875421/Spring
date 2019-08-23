@@ -1,48 +1,20 @@
 package com.webcomm.oa.controller;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import javax.activation.DataSource;
-import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
-import org.quartz.DateBuilder;
-import org.quartz.JobBuilder;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.quartz.DateBuilder.IntervalUnit;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,21 +23,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
-import org.springframework.format.datetime.DateFormatter;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.webcomm.oa.batch.MailCaseReqReportJob;
 import com.webcomm.oa.domain.CaseReq;
-import com.webcomm.oa.exception.CustomGenericException;
 import com.webcomm.oa.result.ResultBeen;
 import com.webcomm.oa.service.CaseReqPdfService;
 import com.webcomm.oa.service.CaseReqService;
 import com.webcomm.oa.service.MailService;
 import com.webcomm.oa.validator.CaseReqValidator;
-
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
@@ -95,7 +58,7 @@ public class CaseReqController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CaseReqController.class);
 
-//	@InitBinder(value = "command")
+//	@InitBinder("caseReq")
 //	public void setValidator(WebDataBinder binder) {
 //		binder.setValidator(new CaseReqValidator());
 //	}
@@ -231,10 +194,11 @@ public class CaseReqController {
 	@RequestMapping("/caseReq/deleteCaseReq")
 	@ResponseBody
 	public ResultBeen<Object> deleteCaseReqs(@RequestParam(value = "caseNos[]") String[] caseNos) throws Exception {
-		int i = caseReqService.deleteCaseNos(caseNos);
+		caseReqService.deleteCaseReqs(caseNos);
+
 		ResultBeen<Object> resultBeen = new ResultBeen<>();
 
-		resultBeen.setData("成功! 刪除 " + (i) + " 筆 ");
+		resultBeen.setData("成功! 刪除 ");
 		return resultBeen;
 
 	}

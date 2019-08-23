@@ -4,6 +4,8 @@ server:
   port: 9000
 
 spring:
+  profiles:
+   active: dev
   datasource:
     driverClassName: oracle.jdbc.driver.OracleDriver
     url: jdbc:oracle:thin:@localhost:1521:XE
@@ -16,6 +18,8 @@ spring:
    database-platform: org.hibernate.dialect.Oracle10gDialect
   thymeleaf:
    cache: false
+
+  
 ##Gmail
   mail: 
     host: smtp.gmail.com
@@ -33,6 +37,38 @@ spring:
     
 #發件人
 mail.fromMail.addr : rex@webcomm.com.tw    
-      
+
+---     
+#development environment
+spring:
+  profiles: test
+  datasource:
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: CA107
+    password: 123456
+server:
+  servlet:
+    context-path: /oa
+  port: 8160 
+  
+
+---     
+#development environment
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=CST
+    username: root
+    password: mysql
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+server:
+  servlet:
+    context-path: /oa
+  port: 9000
 
 

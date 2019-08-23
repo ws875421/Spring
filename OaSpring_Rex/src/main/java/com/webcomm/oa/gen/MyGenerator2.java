@@ -8,7 +8,6 @@ import java.util.Calendar;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * 承辦案件 自定義主鍵
@@ -16,7 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
  * @author user
  *
  */
-public class MyGenerator implements IdentifierGenerator {
+public class MyGenerator2 implements IdentifierGenerator {
 
 	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
 
@@ -35,9 +34,11 @@ public class MyGenerator implements IdentifierGenerator {
 			try {
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery("select * from case_req order by CASE_NO desc limit 1;");
+
 				rs.next();
-				int val = rs.getInt("CASE_NO");
-				caseNo = prefix + String.valueOf(val + 1).substring(4, 9);
+				int nextval = rs.getInt("CASE_NO");
+
+				caseNo = String.format("%05d", nextval + 1);
 			} catch (SQLException ex) {
 				throw new HibernateException("Unable to generate Sequence");
 			}

@@ -166,8 +166,19 @@ public class CaseReqServiceImp implements CaseReqService {
 	 * @see com.webcomm.oa.service.CaseReqService#deleteCaseReqs(java.util.List)
 	 */
 	@Override
-	public void deleteCaseReqs(List<String> caseNos) {
-//		caseReqRepository.delete(caseNos);
+	public void deleteCaseReqs(String[] caseNos) throws Exception {
+
+		try {
+			List<CaseReq> list = new ArrayList<>();
+			for (String s : caseNos) {
+				list.add(caseReqRepository.getOne(s));
+			}
+			
+			caseReqRepository.deleteAll(list);
+		} catch (Exception e) {
+			throw new CustomGenericException("1", "資料不存在");
+		}
+
 	}
 
 	/*
@@ -193,7 +204,7 @@ public class CaseReqServiceImp implements CaseReqService {
 		if (i == 0) {
 			throw new CustomGenericException("1", "資料不存在");
 		}
-		
+
 		return i;
 	}
 

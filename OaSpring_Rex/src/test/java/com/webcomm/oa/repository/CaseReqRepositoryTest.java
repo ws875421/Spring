@@ -78,27 +78,38 @@ public class CaseReqRepositoryTest {
 //		System.out.println("###############################################");
 //	}
 
-//    @Test
-//    @Rollback(value = false)
-//    public void modifyUserTest(){
+	@Test
+	@Rollback(value = false)
+	public void modifyUserTest() {
 //    	CaseReq caseReq =caseReqRepository.getOne("201900047");
 //    	caseReq.setWorkitem("更改測試");
-//    }
+		CaseReq c = new CaseReq();
+		CaseReq c2 = caseReqRepository.saveAndFlush(new CaseReq());
+
+		System.out.println(c2.getCaseNo());
+	}
 
 //	@Test
 //	@Rollback(value = false)
 //	public void deleteUserTest() {
-//		String[] casenos = { "201900014", "201900015" };
+//		try {
+//			String[] casenos = { "201900014", "201900015" };
 //
-//		List<CaseReq> list = new ArrayList<>();
+//			List<CaseReq> list = new ArrayList<>();
 //
-//		for (String s : casenos) {
-//			Optional<CaseReq> Opcas = caseReqRepository.findById(s);
-//			list.add(Opcas.get());
+//			for (String s : casenos) {
+//				list.add(caseReqRepository.getOne(s));
+//			}
+//
+//			System.out.println(list);
+////			caseReqRepository.deleteByCaseReqIn(list);
+//
+//			Iterable<CaseReq> entities = list;
+//			caseReqRepository.deleteAll(entities);
+//		} catch (Exception e) {
+//			e.printStackTrace();
 //		}
 //
-//		System.out.println(list);
-//		caseReqRepository.deleteByCaseReqIn(list);
 //	}
 
 //	@Test

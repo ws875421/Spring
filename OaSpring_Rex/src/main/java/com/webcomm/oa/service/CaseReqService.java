@@ -68,7 +68,7 @@ public interface CaseReqService {
 	 * 
 	 * @param caseNos 工作編號
 	 */
-	public void deleteCaseReqs(List<String> caseNos);
+	public void deleteCaseReqs(String[] caseNos)throws Exception;
 
 	/**
 	 * 刪除承辦案件
